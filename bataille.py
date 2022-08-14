@@ -1,9 +1,28 @@
+"""
+Simple simulator of Bataille card game
+
+This module allows to simulate Bataille card game for an arbitrary
+number of players, choosing the number of suits, cards per suit and
+jokers in the card deck.
+"""
+
 import collections
 import random
 
 
 class Deck(object):
+    """
+    Configurable deck of cards that can be distributed
+    """
     def __init__(self, card_count_per_color, color_count, joker_count):
+        """
+        Initialize deck of cards
+
+        Args:
+            card_count_per_color (int): number of cards per suit
+            color_count (int): number of suits
+            joker_count (int): number of jokers
+        """
         joker_value = card_count_per_color
         self.cards = (
             list(range(card_count_per_color)) * color_count +
@@ -11,33 +30,73 @@ class Deck(object):
         )
 
     def distribute(self, n):
+        """
+        Distribute the cards in n stacks
+
+        Args:
+            n (int): number of stacks
+
+        Returns:
+            List of n card stacks
+        """
         random.shuffle(self.cards)
         return [self.cards[i::n] for i in range(n)]
 
 
 class Player(object):
+    """
+    Orderable card player with score
+    """
     def __init__(self, name, cards):
+        """
+        Initialize player attributes
+
+        Args:
+            name (str): player's name
+            cards (list): player's card deck
+        """
         self.name = str(name)
         self.cards = collections.deque(cards)
         self.clear()
 
     def __lt__(self, other):
+        """
+        Score based less-than operator
+        """
         return self.score < other.score
 
     def clear(self):
+        """
+        Clear player's score
+        """
         self.played_cards = []
         self.score = [-1, -1]
 
     def collect_cards(self, cards):
+        """
+        Collect cards at the bottom of player's card stack
+
+        Args:
+            cards (list): cards to be collected
+        """
         self.cards.extend(cards)
 
     def discard_card(self):
+        """
+        Discard a card without changing the score
+        """
         self.played_cards.append(self.cards.popleft())
 
     def has_card(self):
+        """
+        Returns True if the player has at least one playable card
+        """
         return len(self.cards) > 0
 
     def play_card(self):
+        """
+        Play a card and update player's score
+        """
         played_card = self.cards.popleft()
         self.played_cards.append(played_card)
         self.score[0] += 1
@@ -45,7 +104,17 @@ class Player(object):
 
 
 class Game(object):
+    """
+    Bataille game to run
+    """
     def __init__(self, deck, player_count):
+        """
+        Initialize Bataille game
+
+        Args:
+            deck (Deck): full deck of cards
+            player_count (int): number of players
+        """
         self.players = [
             Player(f'Player {i}', cards)
             for (i, cards)
@@ -53,6 +122,9 @@ class Game(object):
         ]
 
     def run(self):
+        """
+        Run the game
+        """
         # Only keep players with cards
         playing_players = [
             player
