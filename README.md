@@ -1,8 +1,6 @@
 # Bataille
 
-A simple simulator of the Bataille card game, also known as War:
-
-[https://en.wikipedia.org/wiki/War_(card_game)](https://en.wikipedia.org/wiki/War_(card_game))
+A simple simulator of the Bataille card game, also known as [War](https://en.wikipedia.org/wiki/War_(card_game)). One can set the number of suits and cards per suit as well as the number of jokers in the deck of cards. It is also possible to define an arbitrary number of players for a game.
 
 ## 📄 License
 
