@@ -14,6 +14,7 @@ class Deck(object):
         random.shuffle(self.cards)
         return [self.cards[i::n] for i in range(n)]
 
+
 class Player(object):
     def __init__(self, name, cards):
         self.name = str(name)
@@ -41,6 +42,7 @@ class Player(object):
         self.played_cards.append(played_card)
         self.score[0] += 1
         self.score[1] = played_card
+
 
 class Game(object):
     def __init__(self, deck, player_count):
@@ -121,6 +123,7 @@ class Game(object):
             print(f'Winner is {winner.name} in {round_count} rounds')
         else:
             print(f'No winner in {round_count} rounds')
+
 
 if __name__ == '__main__':
     # Create a deck of 52 cards and 2 jokers
