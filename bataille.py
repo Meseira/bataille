@@ -57,6 +57,7 @@ class Player(object):
         """
         self.name = str(name)
         self.cards = collections.deque(cards)
+        self.card_history = []
         self.clear()
 
     def __lt__(self, other):
@@ -92,6 +93,12 @@ class Player(object):
         Returns True if the player has at least one playable card
         """
         return len(self.cards) > 0
+
+    def log_card_count(self):
+        """
+        Append the current count of cards to the card history
+        """
+        self.card_history.append(len(self.cards))
 
     def play_card(self):
         """
@@ -138,6 +145,10 @@ class Game(object):
         while len(playing_players) > 1:
             round_count += 1
             played_cards = []
+
+            # Log card counts
+            for player in self.players:
+                player.log_card_count()
 
             # Play round
             for player in playing_players:
@@ -198,6 +209,12 @@ class Game(object):
         else:
             self.results['winner'] = None
             self.results['round_count'] = round_count
+        self.results['card_history'] = []
+        for player in self.players:
+            self.results['card_history'].append({
+                'player_name': player.name,
+                'data': player.card_history
+            })
 
 
 if __name__ == '__main__':
