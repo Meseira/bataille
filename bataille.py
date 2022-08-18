@@ -120,6 +120,7 @@ class Game(object):
             for (i, cards)
             in enumerate(deck.distribute(player_count))
         ]
+        self.results = {}
 
     def run(self):
         """
@@ -189,12 +190,14 @@ class Game(object):
                 if player.has_card()
             ]
 
-        # Final message
+        # Export results
         if len(playing_players) == 1:
             winner = playing_players[0]
-            print(f'Winner is {winner.name} in {round_count} rounds')
+            self.results['winner'] = winner.name
+            self.results['round_count'] = round_count
         else:
-            print(f'No winner in {round_count} rounds')
+            self.results['winner'] = None
+            self.results['round_count'] = round_count
 
 
 if __name__ == '__main__':
@@ -204,4 +207,10 @@ if __name__ == '__main__':
     game = Game(deck=deck, player_count=4)
     # Run the game
     game.run()
-
+    # Print results
+    round_count = game.results['round_count']
+    if game.results['winner'] is not None:
+        winner_name = game.results['winner']
+        print(f'Winner is {winner_name} in {round_count} rounds')
+    else:
+        print(f'No winner in {round_count} rounds')
